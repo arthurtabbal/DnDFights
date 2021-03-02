@@ -1,6 +1,4 @@
-package com.example.dndfights;
-import android.annotation.SuppressLint;
-import android.util.Log;
+package com.tabbal.dndfights;
 
 import androidx.appcompat.app.AppCompatActivity;
 

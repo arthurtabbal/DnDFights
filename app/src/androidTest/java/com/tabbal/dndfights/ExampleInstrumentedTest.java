@@ -1,4 +1,4 @@
-package com.example.dndfights;
+package com.tabbal.dndfights;
 
 import android.content.Context;
 

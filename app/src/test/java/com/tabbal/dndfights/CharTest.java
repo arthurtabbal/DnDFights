@@ -1,8 +1,6 @@
-package com.example.dndfights;
+package com.tabbal.dndfights;
 
 import junit.framework.TestCase;
-
-import org.junit.Assert;
 
 public class CharTest extends TestCase {
 

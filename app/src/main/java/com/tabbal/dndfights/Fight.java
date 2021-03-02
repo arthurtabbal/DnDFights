@@ -1,6 +1,5 @@
-package com.example.dndfights;
+package com.tabbal.dndfights;
 
-import java.io.CharArrayReader;
 import java.util.ArrayList;
 import android.util.Log;
 

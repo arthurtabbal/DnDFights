@@ -1,4 +1,4 @@
-package com.example.dndfights;
+package com.tabbal.dndfights;
 
 import java.util.ArrayList;
 

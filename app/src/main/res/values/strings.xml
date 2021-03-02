@@ -1,0 +1,23 @@
+<resources>
+    <string name="app_name">DnDFights</string>
+    <string name="dice_tester">Lançador de Dados</string>
+    <string name="simulate_fight">Simular Luta</string>
+    <string name="testing_roll">Testando os dados:</string>
+    <string name="button_d4">d4</string>
+    <string name="button_d6">d6</string>
+    <string name="button_d8">d8</string>
+    <string name="button_d10">d10</string>
+    <string name="button_d12">d12</string>
+    <string name="button_d20">d20</string>
+    <string name="button_d100">d100</string>
+    <string name="roll_value">---</string>
+    <string name="build_char">Construir Char</string>
+    <string name="next_round">Next Round</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="grid_fragment_text">Grid</string>
+    <string name="fight_report">fight stats</string>
+    <string name="button_start_fight">Start Combat</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
+</resources>

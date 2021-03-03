@@ -1,31 +1,25 @@
 package com.tabbal.dndfights;
 import android.util.Log;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Locale;
 
 
-public class Char {
+public class Char implements Serializable {
 
     public static int tot_id = 0;
-    public static int getModifier(int attr) {
-        if (attr >= 10) {
-            return (attr - 10) / 2;
-        } else {
-            return (attr - 11) / 2;
-        }
-
-    }
+    private static String CHAR_DOWN = "CHAR DOWN";
 
     private String name; // for both first and last
     private final int id;
     private int max_hp = 10;
-    private int current_hp = max_hp;
+    private transient int current_hp = max_hp;
     private boolean is_alive = true;
     private int prof_bonus = 2;
     private int armor_class = 10;
-    private Integer initiative = 10;
-    private Integer initiative_draw = 10;
+    private transient Integer initiative = 10;
+    private transient Integer initiative_draw = 10;
     private Integer initiative_bonus = 0;
     private int stg = 10;
     private int dex = 10;
@@ -33,24 +27,23 @@ public class Char {
     private int itl = 10;
     private int wis = 10;
     private int car = 10;
-
     private int speed = 6;
 
     private boolean is_party = true;
     private boolean is_arcane_caster = false;
     private boolean is_divine_caster = false;
 
-    private Position position = new Position(0,0);
+    private transient Position position = new Position(0,0);
     private ArrayList<Item> items;
     private ArrayList<Weapon> weapons;
-    private ArrayList<Damage.types> resistances;
-    private ArrayList<Damage.types> immunities;
+    private ArrayList<Damage.type> resistances;
+    private ArrayList<Damage.type> immunities;
 
     public Char(String name) {
         this.id = ++tot_id;
         this.name = name;
-        this.immunities = new ArrayList<Damage.types>();
-        this.resistances = new ArrayList<Damage.types>();
+        this.immunities = new ArrayList<Damage.type>();
+        this.resistances = new ArrayList<Damage.type>();
         this.weapons = new ArrayList<Weapon>();
     }
 
@@ -70,10 +63,17 @@ public class Char {
     public int getAc() {  return this.armor_class; }
     public ArrayList<Item> getItems() { return this.items; }
     public ArrayList<Weapon> getWeapons() { return this.weapons; }
-    public ArrayList<Damage.types> getResistances() { return this.resistances; }
-    public ArrayList<Damage.types> getImmunities() { return this.immunities; }
-    public Integer getInitiative_draw() {
-        return initiative_draw;
+    public ArrayList<Damage.type> getResistances() { return this.resistances; }
+    public ArrayList<Damage.type> getImmunities() { return this.immunities; }
+    public Integer getInitiative_draw() { return initiative_draw; }
+
+    public int getModifier(int attr) {
+        if (attr >= 10) {
+            return (attr - 10) / 2;
+        } else {
+            return (attr - 11) / 2;
+        }
+
     }
 
     public boolean isConscious (){
@@ -140,7 +140,7 @@ public class Char {
             this.current_hp = current_hp;
         } else {
             this.current_hp = 0;
-            Log.println(Log.DEBUG,"CharDown","     ++++ " + this.getName() + " is now unconscious. ++++ ");
+            Log.d("CharDown","     ++++ " + this.getName() + " is now unconscious. ++++ ");
         }
 
     }
@@ -150,13 +150,13 @@ public class Char {
         this.items.add(item);
     }
     public void addWeapon(Weapon weapon) { this.weapons.add(weapon); }
-    public void addResistance(Damage.types type) { this.resistances.add(type); }
-    public void addImmunity(Damage.types type) { this.immunities.add(type); }
+    public void addResistance(Damage.type type) { this.resistances.add(type); }
+    public void addImmunity(Damage.type type) { this.immunities.add(type); }
 
     public void removeItem(Item item) { this.items.remove(item); }
     public void removeWeapon(Weapon weapon) { this.weapons.remove(weapon); }
-    public void removeResistance(Damage.types type) { this.resistances.remove(type); }
-    public void removeImmunity(Damage.types type) { this.immunities.remove(type); }
+    public void removeResistance(Damage.type type) { this.resistances.remove(type); }
+    public void removeImmunity(Damage.type type) { this.immunities.remove(type); }
 
     public void act(Fight fight) {
         attack(fight);
@@ -171,17 +171,17 @@ public class Char {
             if (eachChar != this & (eachChar.is_party != this.is_party) & eachChar.isConscious()) {
                 int roll = DiceRoller.rollD20();
                 int modifier = getModifier(stg);
-                Log.println(Log.DEBUG,"MeleeAttackRoll",
+                Log.d("MeleeAttackRoll",
                         " >>> " + this.getName() + " rolled " + roll + " + " + (this.prof_bonus + modifier) +
                                 " against " + eachChar.name + " : ");
                 if (roll == 20){
-                    Log.println(Log.DEBUG,"MeleeAttackRoll","       CRITICAL HIT !!") ;
+                    Log.d("MeleeAttackRoll","       CRITICAL HIT !!") ;
                     this.inflictDamage(eachChar, this.weapons.get(0), modifier, true);
                 } else if (roll + this.prof_bonus + getModifier(this.stg) >= eachChar.armor_class) {
-                    Log.println(Log.DEBUG,"MeleeAttackRoll","       HIT !") ;
+                    Log.d("MeleeAttackRoll","       HIT !") ;
                     this.inflictDamage(eachChar, this.weapons.get(0), modifier, false);
                 } else {
-                    Log.println(Log.DEBUG,"MeleeAttackRoll","       Missed ... ");
+                    Log.d("MeleeAttackRoll","       Missed ... ");
                 }
                 break;
             }
@@ -193,17 +193,17 @@ public class Char {
             if (eachChar != this & (eachChar.is_party != this.is_party) & eachChar.isConscious()) {
                 int roll = DiceRoller.rollD20();
                 int modifier = getModifier(dex);
-                Log.println(Log.DEBUG,"RangeAttackRoll",
+                Log.d("RangeAttackRoll",
                         " >>> " + this.getName() + " rolled " + roll + " + " + (this.prof_bonus + modifier) +
                                 " against " + eachChar.name + " : ");
                 if (roll == 20){
-                    Log.println(Log.DEBUG,"RangeAttackRoll","       CRITICAL HIT !!") ;
+                    Log.d("RangeAttackRoll","       CRITICAL HIT !!") ;
                     this.inflictDamage(eachChar, this.weapons.get(0), modifier,true);
                 } else if (roll + this.prof_bonus + getModifier(this.dex) >= eachChar.armor_class) {
-                    Log.println(Log.DEBUG,"RangeAttackRoll","       HIT !") ;
+                    Log.d("RangeAttackRoll","       HIT !") ;
                     this.inflictDamage(eachChar, this.weapons.get(0), modifier, false);
                 } else {
-                    Log.println(Log.DEBUG,"RangeAttackRoll","       Missed ... ");
+                    Log.d("RangeAttackRoll","       Missed ... ");
                 }
                 break;
             }
@@ -222,7 +222,7 @@ public class Char {
             int damageRoll = Math.max(0, weapon.rollDamage(critical_hit));
             int multiplier = critical_hit ? 2 : 1;
             int totDamage = damageRoll + attrBonus;
-            Log.println(Log.DEBUG,"DamageRoll",
+            Log.d("DamageRoll",
                     "            " + target.getName() + " took " +
                             weapon.getDamage().dices * multiplier + "d" + weapon.getDamage().faces + " + " + attrBonus + " = " + totDamage +
                             " of " + weapon.getDamage().damageType + " damage");
@@ -245,11 +245,11 @@ public class Char {
     }
 
     public void rollOwnInitiative() {
-        this.initiative = DiceRoller.rollD20() + Char.getModifier(this.dex) + this.initiative_bonus;
+        this.initiative = DiceRoller.rollD20() + getModifier(this.dex) + this.initiative_bonus;
     }
 
     public void rollInitiativeDraw() {
-        this.initiative_draw = DiceRoller.rollD20() + Char.getModifier(this.dex) + this.initiative_bonus;
+        this.initiative_draw = DiceRoller.rollD20() + getModifier(this.dex) + this.initiative_bonus;
     }
 
     private int getInitiativeBonus() {

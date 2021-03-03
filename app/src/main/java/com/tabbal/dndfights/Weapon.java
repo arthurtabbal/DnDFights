@@ -16,7 +16,6 @@ public class Weapon extends Item {
         this.damage = damage;
         this.range = range;
         this.critical_damage = new Damage( 2 * damage.dices, damage.faces, damage.damageType);
-
     }
 
     public Weapon (String name, Damage damage, int range, ArrayList<Tags> tags) {

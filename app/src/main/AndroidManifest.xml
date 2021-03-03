@@ -9,14 +9,28 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.DnDFights">
-        <activity android:name="com.tabbal.dndfights.DiceTesterActivity" />
-        <activity android:name="com.tabbal.dndfights.MainActivity">
+        <activity android:name=".MainActivity"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".DiceTesterActivity"
+            android:label="@string/dice_roller_label"
+            android:parentActivityName=".MainActivity"
+            android:screenOrientation="portrait"
+            />
+        <activity android:name=".MyCharsActivity"
+            android:label="@string/my_chars_label"
+            android:parentActivityName=".MainActivity"
+            android:screenOrientation="portrait"
+            />
+        <activity android:name=".StartFightActivity"
+            android:parentActivityName=".MainActivity"
+            android:screenOrientation="portrait"
+            />
     </application>
 
 </manifest>

@@ -22,9 +22,7 @@ public class Fight {
 
         this.id = ++totId;
         this.grid = grid;
-        for (Char eachChar : charList) {
-            charAllList.add(eachChar);
-        }
+        charAllList.addAll(charList);
     }
 
     public void addChar(Char charToAdd) {
